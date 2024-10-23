@@ -2,15 +2,13 @@ package com.github.renatotakaoka.filmes_api.dtos;
 
 import com.github.renatotakaoka.filmes_api.models.Review;
 import jakarta.validation.constraints.NotBlank;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
+@ToString
 
 public class ReviewDTO {
 

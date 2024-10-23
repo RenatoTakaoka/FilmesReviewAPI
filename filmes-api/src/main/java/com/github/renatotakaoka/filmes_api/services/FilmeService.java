@@ -1,6 +1,7 @@
 package com.github.renatotakaoka.filmes_api.services;
 
 import com.github.renatotakaoka.filmes_api.dtos.FilmeDTO;
+import com.github.renatotakaoka.filmes_api.dtos.FilmeDTOWithReview;
 import com.github.renatotakaoka.filmes_api.exceptions.DatabaseException;
 import com.github.renatotakaoka.filmes_api.exceptions.ResourceNotFoundException;
 import com.github.renatotakaoka.filmes_api.models.Filme;
@@ -27,16 +28,16 @@ public class FilmeService {
     private ReviewRepository reviewRepository;
 
     @Transactional(readOnly = true)
-    public List<FilmeDTO> findAll() {
-        return repository.findAll().stream().map(FilmeDTO::new).collect(Collectors.toList());
+    public List<FilmeDTOWithReview> findAll() {
+        return repository.findAll().stream().map(FilmeDTOWithReview::new).collect(Collectors.toList());
     }
 
     @Transactional(readOnly = true)
-    public FilmeDTO findById(Long id) {
+    public FilmeDTOWithReview findById(Long id) {
         Filme filme = repository.findById(id).orElseThrow(
                 () -> new ResourceNotFoundException("Recurso não encontrado")
         );
-        return new FilmeDTO(filme);
+        return new FilmeDTOWithReview(filme);
     }
 
     @Transactional

@@ -42,6 +42,7 @@ public class ReviewService {
     @Transactional
     public ReviewDTO insert(ReviewDTO dto) {
         Review entity = new Review();
+        copyDtoToEntity(dto, entity);
         entity = repository.save(entity);
         return new ReviewDTO(entity);
     }
