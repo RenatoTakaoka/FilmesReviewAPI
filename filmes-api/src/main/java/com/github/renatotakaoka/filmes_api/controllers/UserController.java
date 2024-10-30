@@ -1,6 +1,8 @@
 package com.github.renatotakaoka.filmes_api.controllers;
 
 import com.github.renatotakaoka.filmes_api.dtos.UserDTO;
+import com.github.renatotakaoka.filmes_api.dtos.UserInsertDTO;
+import com.github.renatotakaoka.filmes_api.models.User;
 import com.github.renatotakaoka.filmes_api.services.UserService;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
@@ -32,13 +34,14 @@ public class UserController {
     }
 
     @PostMapping
-    public ResponseEntity<UserDTO> insert(@RequestBody @Valid UserDTO dto) {
-        dto = service.insert(dto);
+    public ResponseEntity<UserDTO> insert(@RequestBody @Valid UserInsertDTO dto) {
+        UserDTO newDto = service.insert(dto);
         URI uri = ServletUriComponentsBuilder
                 .fromCurrentRequest()
                 .path("/{id}")
-                .buildAndExpand(dto.getId()).toUri();
-        return ResponseEntity.created(uri).body(dto);
+                .buildAndExpand(newDto.getId())
+                .toUri();
+        return ResponseEntity.created(uri).body(newDto);
     }
 
     @PutMapping("/{id}")

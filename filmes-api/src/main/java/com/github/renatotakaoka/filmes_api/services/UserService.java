@@ -1,10 +1,14 @@
 package com.github.renatotakaoka.filmes_api.services;
 
+import com.github.renatotakaoka.filmes_api.dtos.RoleDTO;
 import com.github.renatotakaoka.filmes_api.dtos.UserDTO;
+import com.github.renatotakaoka.filmes_api.dtos.UserInsertDTO;
 import com.github.renatotakaoka.filmes_api.exceptions.DatabaseException;
 import com.github.renatotakaoka.filmes_api.exceptions.ResourceNotFoundException;
+import com.github.renatotakaoka.filmes_api.models.Role;
 import com.github.renatotakaoka.filmes_api.models.User;
 import com.github.renatotakaoka.filmes_api.repositories.ReviewRepository;
+import com.github.renatotakaoka.filmes_api.repositories.RoleRepository;
 import com.github.renatotakaoka.filmes_api.repositories.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +26,8 @@ public class UserService {
     private UserRepository repository;
     @Autowired
     private ReviewRepository reviewRepository;
+    @Autowired
+    private RoleRepository roleRepository;
 
     @Transactional(readOnly = true)
     public List<UserDTO> findAll() {
@@ -37,9 +43,10 @@ public class UserService {
     }
 
     @Transactional
-    public UserDTO insert(UserDTO dto) {
+    public UserDTO insert(UserInsertDTO dto) {
         User entity = new User();
         copyDtoToEntity(dto, entity);
+        entity.setPassword(dto.getPassword());
         entity = repository.save(entity);
         return new UserDTO(entity);
     }
@@ -73,7 +80,12 @@ public class UserService {
     private void copyDtoToEntity(UserDTO dto, User entity) {
         entity.setName(dto.getName());
         entity.setEmail(dto.getEmail());
-        entity.setPassword(dto.getPassword());
+//        entity.setPassword(dto.getPassword());
+        entity.getRoles().clear();
+        for(RoleDTO roleDTO : dto.getRoles()) {
+            Role role = roleRepository.getReferenceById(roleDTO.getId());
+            entity.getRoles().add(role);
+        }
     }
 
 }

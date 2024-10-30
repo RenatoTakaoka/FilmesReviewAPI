@@ -1,0 +1,5 @@
+CREATE TABLE IF NOT EXISTS tb_role (
+    id BIGINT NOT NULL AUTO_INCREMENT,
+    authority VARCHAR(255) NOT NULL,
+    PRIMARY KEY (id)
+);

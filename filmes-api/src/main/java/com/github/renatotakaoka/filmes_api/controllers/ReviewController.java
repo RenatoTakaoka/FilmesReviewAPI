@@ -31,6 +31,18 @@ public class ReviewController {
         return ResponseEntity.ok(dto);
     }
 
+    @GetMapping("/filme/{id}")
+    public ResponseEntity<List<ReviewDTO>> findByFilme(@PathVariable Long id) {
+        List<ReviewDTO> dtos = service.findByFilme(id);
+        return ResponseEntity.ok(dtos);
+    }
+
+    @GetMapping("/user/{id}")
+    public ResponseEntity<List<ReviewDTO>> findByUser(@PathVariable Long id) {
+        List<ReviewDTO> dtos = service.findByUser(id);
+        return ResponseEntity.ok(dtos);
+    }
+
     @PostMapping
     public ResponseEntity<ReviewDTO> insert(@RequestBody @Valid ReviewDTO dto) {
         dto = service.insert(dto);

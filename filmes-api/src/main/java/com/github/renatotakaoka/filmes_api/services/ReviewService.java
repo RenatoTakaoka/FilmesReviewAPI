@@ -3,7 +3,9 @@ package com.github.renatotakaoka.filmes_api.services;
 import com.github.renatotakaoka.filmes_api.dtos.ReviewDTO;
 import com.github.renatotakaoka.filmes_api.exceptions.DatabaseException;
 import com.github.renatotakaoka.filmes_api.exceptions.ResourceNotFoundException;
+import com.github.renatotakaoka.filmes_api.models.Filme;
 import com.github.renatotakaoka.filmes_api.models.Review;
+import com.github.renatotakaoka.filmes_api.models.User;
 import com.github.renatotakaoka.filmes_api.repositories.FilmeRepository;
 import com.github.renatotakaoka.filmes_api.repositories.ReviewRepository;
 import com.github.renatotakaoka.filmes_api.repositories.UserRepository;
@@ -69,6 +71,26 @@ public class ReviewService {
         } catch (DataIntegrityViolationException e) {
             throw new DatabaseException("Recurso não encontrado");
         }
+    }
+
+    @Transactional(readOnly = true)
+    public List<ReviewDTO> findByFilme(Long filmeId) {
+        if(!filmeRepository.existsById(filmeId)) {
+            throw new ResourceNotFoundException("Recurso não encontrado");
+        }
+        Filme filme = filmeRepository.getReferenceById(filmeId);
+        List<Review> reviewList = repository.findByFilme(filme);
+        return reviewList.stream().map(ReviewDTO::new).toList();
+    }
+
+    @Transactional(readOnly = true)
+    public List<ReviewDTO> findByUser(Long userId) {
+        if(!userRepository.existsById(userId)) {
+            throw new ResourceNotFoundException("Recurso não encontrado");
+        }
+        User user = userRepository.getReferenceById(userId);
+        List<Review> reviewList = repository.findByUser(user);
+        return reviewList.stream().map(ReviewDTO::new).toList();
     }
 
     private void copyDtoToEntity(ReviewDTO dto, Review entity) {

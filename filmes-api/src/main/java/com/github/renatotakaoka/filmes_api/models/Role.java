@@ -6,25 +6,17 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.List;
-import java.util.Set;
-
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
-
 @Entity
-@Table(name = "tb_genero")
-public class Genero {
+@Table(name = "tb_role")
+public class Role {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(nullable = false)
-    private String nome;
-    @OneToMany(mappedBy = "genero")
-    private Set<Filme> filmes;
-
+    private String authority;
 
 }

@@ -3,6 +3,7 @@ package com.github.renatotakaoka.filmes_api.services;
 import com.github.renatotakaoka.filmes_api.dtos.GeneroDTO;
 import com.github.renatotakaoka.filmes_api.exceptions.DatabaseException;
 import com.github.renatotakaoka.filmes_api.exceptions.ResourceNotFoundException;
+import com.github.renatotakaoka.filmes_api.models.Filme;
 import com.github.renatotakaoka.filmes_api.models.Genero;
 import com.github.renatotakaoka.filmes_api.repositories.FilmeRepository;
 import com.github.renatotakaoka.filmes_api.repositories.GeneroRepository;
@@ -12,7 +13,9 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -70,7 +73,7 @@ public class GeneroService {
 
     private void copyDtoToEntity(GeneroDTO dto, Genero entity) {
         entity.setNome(dto.getNome());
-        entity.setFilmes(filmeRepository.findAllById(dto.getFilmesIds()));
+        entity.setFilmes(new HashSet<>(filmeRepository.findAllById(dto.getFilmesIds())));
     }
 
 }

@@ -20,3 +20,13 @@ INSERT INTO tb_review (texto, user_id, filme_id) VALUES ('Incrível! Um dos melh
 INSERT INTO tb_review (texto, user_id, filme_id) VALUES ('Muito divertido! Rimos muito.', 2, 3);
 INSERT INTO tb_review (texto, user_id, filme_id) VALUES ('Uma história emocionante e bem contada.', 3, 2);
 INSERT INTO tb_review (texto, user_id, filme_id) VALUES ('Me deu medo do início ao fim!', 1, 4);
+
+-- Inserir papéis (roles)
+INSERT INTO tb_role (authority) VALUES ('ROLE_USER');
+INSERT INTO tb_role (authority) VALUES ('ROLE_ADMIN');
+INSERT INTO tb_role (authority) VALUES ('ROLE_MODERATOR');
+
+-- Inserir associações entre usuários e papéis
+INSERT INTO tb_user_role (user_id, role_id) VALUES (1, 1);  -- Alice é ROLE_USER
+INSERT INTO tb_user_role (user_id, role_id) VALUES (2, 1);  -- Bob é ROLE_USER
+INSERT INTO tb_user_role (user_id, role_id) VALUES (3, 2);  -- Charlie é ROLE_ADMIN

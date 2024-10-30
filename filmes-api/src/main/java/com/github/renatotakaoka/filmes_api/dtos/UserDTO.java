@@ -10,7 +10,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -25,15 +27,17 @@ public class UserDTO {
     @NotBlank(message = "Email é requerido")
     private String email;
     @NotBlank(message = "Senha é requerido")
-    private String password;
+//    private String password;
     private List<Long> userReviewsIds;
+    private Set<RoleDTO> roles = new HashSet<>();
 
     public UserDTO(User entity) {
         id = entity.getId();
         name = entity.getName();
         email = entity.getEmail();
-        password = entity.getPassword();
+//        password = entity.getPassword();
         if(entity.getUserReviews() != null)
             userReviewsIds = entity.getUserReviews().stream().map(Review::getId).toList();
+        entity.getRoles().forEach(role -> this.roles.add(new RoleDTO(role)));
     }
 }
