@@ -11,9 +11,9 @@ INSERT INTO tb_filme (titulo, ano, genero_id) VALUES ('Os Caça-Fantasmas', 1984
 INSERT INTO tb_filme (titulo, ano, genero_id) VALUES ('O Exorcista', 1973, 4);
 
 -- Inserir usuários
-INSERT INTO tb_user (name, email, password) VALUES ('Alice', 'alice@example.com', 'senha123');
-INSERT INTO tb_user (name, email, password) VALUES ('Bob', 'bob@example.com', 'senha123');
-INSERT INTO tb_user (name, email, password) VALUES ('Charlie', 'charlie@example.com', 'senha123');
+INSERT INTO tb_user (name, email, password) VALUES ('Alice', 'alice@example.com', '{pbkdf2}a8e3434047b41427a1b29d0689af0866c702496463c49ee82b77bc82d78ab25da4d021ff12a13d7d639b84c44712c8e0');
+INSERT INTO tb_user (name, email, password) VALUES ('Bob', 'bob@example.com', '{pbkdf2}a8e3434047b41427a1b29d0689af0866c702496463c49ee82b77bc82d78ab25da4d021ff12a13d7d639b84c44712c8e0');
+INSERT INTO tb_user (name, email, password) VALUES ('Charlie', 'charlie@example.com', '{pbkdf2}a8e3434047b41427a1b29d0689af0866c702496463c49ee82b77bc82d78ab25da4d021ff12a13d7d639b84c44712c8e0');
 
 -- Inserir avaliações
 INSERT INTO tb_review (texto, user_id, filme_id) VALUES ('Incrível! Um dos melhores filmes que já vi.', 1, 1);

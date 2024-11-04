@@ -26,7 +26,7 @@ public class UserDTO {
     private String name;
     @NotBlank(message = "Email é requerido")
     private String email;
-    @NotBlank(message = "Senha é requerido")
+//    @NotBlank(message = "Senha é requerido")
 //    private String password;
     private List<Long> userReviewsIds;
     private Set<RoleDTO> roles = new HashSet<>();

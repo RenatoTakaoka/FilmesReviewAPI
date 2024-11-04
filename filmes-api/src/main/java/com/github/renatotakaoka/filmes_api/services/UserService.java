@@ -7,12 +7,17 @@ import com.github.renatotakaoka.filmes_api.exceptions.DatabaseException;
 import com.github.renatotakaoka.filmes_api.exceptions.ResourceNotFoundException;
 import com.github.renatotakaoka.filmes_api.models.Role;
 import com.github.renatotakaoka.filmes_api.models.User;
+import com.github.renatotakaoka.filmes_api.projections.UserDetailProjection;
 import com.github.renatotakaoka.filmes_api.repositories.ReviewRepository;
 import com.github.renatotakaoka.filmes_api.repositories.RoleRepository;
 import com.github.renatotakaoka.filmes_api.repositories.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,8 +25,10 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-public class UserService {
+public class UserService implements UserDetailsService {
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
     @Autowired
     private UserRepository repository;
     @Autowired
@@ -46,7 +53,7 @@ public class UserService {
     public UserDTO insert(UserInsertDTO dto) {
         User entity = new User();
         copyDtoToEntity(dto, entity);
-        entity.setPassword(dto.getPassword());
+        entity.setPassword(passwordEncoder.encode(dto.getPassword()));
         entity = repository.save(entity);
         return new UserDTO(entity);
     }
@@ -88,4 +95,18 @@ public class UserService {
         }
     }
 
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        List<UserDetailProjection> list = repository.searchUserAndRolesByEmail(username);
+        if(list.isEmpty()) {
+            throw new UsernameNotFoundException("Email não encontrado");
+        }
+        User user = new User();
+        user.setName(username);
+        user.setPassword(list.get(0).getPassword());
+        for(UserDetailProjection projection : list) {
+            user.addRole(new Role(projection.getRoleId(), projection.getAuthority()));
+        }
+        return user;
+    }
 }
